@@ -29,12 +29,18 @@ class View
         } else {
             throw new Exception("Page Introuvable");
         }
-        $topbar = $this->generateFile("Templates/TemplateTopbar.php",array("t" => $this->_t,"UserName" => $this->_auth->getUsername()));
+
+        $topbarFile = "Templates/TemplateTopbar.php";
+        if (file_exists("Specific/Templates/TemplateTopbar.php")) {
+            $topbarFile = "Specific/Templates/TemplateTopbar.php"; 
+        }
+        $topbar = $this->generateFile($topbarFile,array("t" => $this->_t,"UserName" => $this->_auth->getUsername()));
         
-        // If $this->_auth->getRole() == ...
-        // call templatesidebar with a different Array
-        
-        $sidebar = $this->generateFile("Templates/TemplateSidebar.php",array("menuItems" => $this->_menuItems));
+        $sidebarFile = "Templates/TemplateSidebar.php";
+        if (file_exists("Specific/Templates/TemplateSidebar.php")) {
+            $sidebarFile = "Specific/Templates/TemplateSidebar.php"; 
+        }
+        $sidebar = $this->generateFile($sidebarFile,array("menuItems" => $this->_menuItems));
 
         // Page content and elements:
         
@@ -48,9 +54,17 @@ class View
         
         // Role management
         if ($this->_auth->getRole() == 0 ) { // Not logged
-            $view = $this->generateFile("Templates/TemplateNotLogin.php", $pageContent);
+            $notLoginFile = "Templates/TemplateNotLogin.php";
+            if (file_exists("Specific/Templates/TemplateNotLogin.php")) {
+                $notLoginFile = "Specific/Templates/TemplateNotLogin.php"; 
+            }
+            $view = $this->generateFile($notLoginFile, $pageContent);
         } elseif ($this->_auth->getRole() > 0 ) { // Logged as xxx
-            $view = $this->generateFile("Templates/TemplateLogin.php", $pageContent);
+            $loginFile = "Templates/TemplateLogin.php";
+            if (file_exists("Specific/Templates/TemplateLogin.php")) {
+                $loginFile = "Specific/Templates/TemplateLogin.php"; 
+            }
+            $view = $this->generateFile($loginFile, $pageContent);
         } else { // Default case, no role : error
             $view = $this->generateError($data);
         }

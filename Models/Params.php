@@ -11,7 +11,8 @@ class Params {
         Array("Table", "Table", "fas fa-table"),
         Array("NiceTumbnail", "NiceTumbnail", "fas fa-table"),
         Array("CircleChart", "CircleChart", "fas fa-table"),
-        Array("Card", "Card", "fas fa-table")
+        Array("Card", "Card", "fas fa-table"),
+        Array("Progress Bar", "ProgressBar", "fas fa-bars")
     );
 
     public function getGlobalVersion() {
