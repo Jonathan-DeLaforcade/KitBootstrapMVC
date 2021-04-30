@@ -111,10 +111,18 @@ class Auth extends Session {
 
     public function changePassword($oldPass,$newPass){
         $ID = $this->getId();
-        echo "changepass AUTH </br>";
         if ($this->verifPassOkWithID($ID,$oldPass)) {
             $this->bdd->query('UPDATE users SET Password = "'.$newPass.'" WHERE ID ='.$ID);
         }
+        $testReq = 'SELECT Password FROM users WHERE ID='.$ID.' LIMIT 1;' ;
+        $testUpdate = $this->bdd->query($testReq)->fetch_assoc();
+
+        return ($testUpdate['Password'] == $newPass);
+    }
+
+    public function changePasswordWithoutOld($ID,$newPass) {
+        $this->bdd->query('UPDATE users SET Password = "'.$newPass.'" WHERE ID ='.$ID);
+
         $testReq = 'SELECT Password FROM users WHERE ID='.$ID.' LIMIT 1;' ;
         $testUpdate = $this->bdd->query($testReq)->fetch_assoc();
 
@@ -173,6 +181,15 @@ class Auth extends Session {
         }
     }
 
+    public function getIdWithMail($mail){
+        $Request = 'SELECT Id FROM users WHERE Mail="'.$mail.'" LIMIT 1;';
+        $DbInfos = $this->bdd->query($Request)->fetch_assoc();
+        if (!is_null($DbInfos)) {
+            return $DbInfos["Id"];
+        } else {
+            return 0;
+        }
+    }
     public function getRole(){
         if(!$this->session->read('auth')){
             return 0;
@@ -194,5 +211,28 @@ class Auth extends Session {
         } else {
             return (($this->session->read('auth'))["Mail"]);
         }
+    }
+
+    public function ForgotPasswordGetKey($mail) {
+        $key = bin2hex(random_bytes(50));
+        $this->session->write("forgotKey",$key);
+        $this->session->write("forgotIDKey",$this->getIdWithMail($mail));
+        $this->session->write("forgotKeyCreateTime",time());
+        return $key;
+    }
+
+    public function ForgotPasswordCleanKey() {
+        $this->session->write("forgotKey",null);
+        $this->session->write("forgotKeyCreateTime",null);
+    }
+
+    public function ForgotPasswordVerifKeyAndID($ID,$key) {
+        $return = false;
+        if (($this->session->read('forgotKeyCreateTime')+600)> time()) { 
+            if (($this->session->read("forgotKey") == $key) && ($this->session->read("forgotIDKey") == $ID)) {
+                $return = true;
+            }
+        }
+        return $return;
     }
 }
