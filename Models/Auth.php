@@ -3,10 +3,12 @@ class Auth extends Session {
 
     private $session;
     private $bdd;
+    private $params;
 
     public function __construct(){
         $this->session = new Session;
         $this->bdd = $this->getBdd();
+        $this->params = new Params;
     }
 
     public function connect($user){
@@ -15,7 +17,10 @@ class Auth extends Session {
     }
 
     public function login($mail, $pass){
-        $DbInfos = $this->bdd->query('SELECT Id,Pseudo,Mail,Role FROM users WHERE Mail="'.$mail.'" AND PASSWORD="'.$pass.'" LIMIT 1')->fetch_assoc();
+        $pass = hash('sha256',$this->params->getSalt().$pass);
+        $query = "SELECT Id,Pseudo,Mail,Role FROM users WHERE Mail='".$mail."' AND PASSWORD='".$pass."' LIMIT 1";
+        echo $query;
+        $DbInfos = $this->bdd->query($query)->fetch_assoc();
         if (!is_null($DbInfos)) {
             $this->connect($DbInfos);
             return true;
@@ -23,7 +28,6 @@ class Auth extends Session {
             return false;
         }
     }
-
     public function accountExist($mail) {
         $return = false;
         $DbInfos = $this->bdd->query('SELECT Id FROM users WHERE Mail="'.$mail.'" LIMIT 1')->fetch_assoc();
@@ -35,9 +39,11 @@ class Auth extends Session {
 
     public function registerNew($pseudo,$mail,$pass) {
         $return = false;
+        $pass = hash('sha256',$this->params->getSalt().$pass);
+
         $DbInfos = $this->bdd->query('SELECT Id FROM users WHERE Mail="'.$mail.'" LIMIT 1')->fetch_assoc();
         if (is_null($DbInfos)) {
-            $request = 'INSERT INTO users (Pseudo,Mail,Password) VALUES ("'.$_POST['userName'].'","'.$_POST['userMail'].'","'.$_POST['PassWord1'].'");';
+            $request = 'INSERT INTO users (Pseudo,Mail,Password) VALUES ("'.$pseudo.'","'.$mail.'","'.$pass.'");';
             $this->bdd->query($request);
             $DbInfos = $this->bdd->query('SELECT Id FROM users WHERE Mail="'.$mail.'" LIMIT 1')->fetch_assoc();
             if (!is_null($DbInfos)) {
@@ -48,7 +54,8 @@ class Auth extends Session {
     }
 
     public function verifPassOkWithMail($mail,$pass){
-        $DbInfos = $this->bdd->query('SELECT Id,Pseudo,Mail,Password,Role FROM users WHERE Mail="'.$mail.'" AND PASSWORD="'.$pass.'" LIMIT 1')->fetch_assoc();
+        $pass = hash('sha256',$this->params->getSalt().$pass);
+        $DbInfos = $this->bdd->query('SELECT Id FROM users WHERE Mail="'.$mail.'" AND PASSWORD="'.$pass.'" LIMIT 1')->fetch_assoc();
         if (!is_null($DbInfos)) {
             return true;
         } else {
@@ -57,6 +64,7 @@ class Auth extends Session {
     }
 
     public function verifPassOkWithID($ID,$pass){
+        $pass = hash('sha256',$this->params->getSalt().$pass);
         $Request = 'SELECT Id FROM users WHERE Id="'.$ID.'" AND PASSWORD="'.$pass.'" LIMIT 1';
         $DbInfos = $this->bdd->query($Request)->fetch_assoc();
         if (!is_null($DbInfos)) {
@@ -75,52 +83,14 @@ class Auth extends Session {
         $tmpReq = "UPDATE users SET $userField=\"$newUserData\" WHERE ID=$ID LIMIT 1;" ;
         $this->bdd->query($tmpReq);
         
-        $testReq = "SELECT $userField FROM users WHERE ID=$ID LIMIT 1;" ;
+        $testReq = "SELECT $userField FROM users WHERE ID=$ID LIMIT 1;";
         $testUpdate = $this->bdd->query($testReq)->fetch_assoc();
         
         return ($testUpdate[$userField] == $newUserData);
     }
 
-    public function changeUsername($newUsername) {
-        $ID = $this->getId();
-        $user = ($this->session->read('auth'));
-        $user["Pseudo"] = $newUsername;
-        $this->session->write('auth', $user);
-        
-        $tmpReq = 'UPDATE users SET Pseudo="'.$newUsername.'" WHERE ID='.$ID.' LIMIT 1;' ;
-        $this->bdd->query($tmpReq);
-        
-        $testReq = 'SELECT Pseudo FROM users WHERE ID='.$ID.' LIMIT 1;' ;
-        $testUpdate = $this->bdd->query($testReq)->fetch_assoc();
-
-        return ($testUpdate['Pseudo'] == $newUsername);
-    }
-
-    public function changeMail($newMail){
-        $ID = $this->getId();
-        $user = ($this->session->read('auth'));
-        $user["Mail"] = $newMail;
-        $this->session->write('auth', $user);
-        $this->bdd->query('UPDATE users SET Mail = "'.$newMail.'" WHERE ID ='.$ID);
-
-        $testReq = 'SELECT Mail FROM users WHERE ID='.$ID.' LIMIT 1;' ;
-        $testUpdate = $this->bdd->query($testReq)->fetch_assoc();
-
-        return ($testUpdate['Mail'] == $newMail);
-    }
-
-    public function changePassword($oldPass,$newPass){
-        $ID = $this->getId();
-        if ($this->verifPassOkWithID($ID,$oldPass)) {
-            $this->bdd->query('UPDATE users SET Password = "'.$newPass.'" WHERE ID ='.$ID);
-        }
-        $testReq = 'SELECT Password FROM users WHERE ID='.$ID.' LIMIT 1;' ;
-        $testUpdate = $this->bdd->query($testReq)->fetch_assoc();
-
-        return ($testUpdate['Password'] == $newPass);
-    }
-
     public function changePasswordWithoutOld($ID,$newPass) {
+        $newPass = hash('sha256',$this->params->getSalt().$newPass);
         $this->bdd->query('UPDATE users SET Password = "'.$newPass.'" WHERE ID ='.$ID);
 
         $testReq = 'SELECT Password FROM users WHERE ID='.$ID.' LIMIT 1;' ;
@@ -215,6 +185,9 @@ class Auth extends Session {
 
     public function ForgotPasswordGetKey($mail) {
         $key = bin2hex(random_bytes(50));
+        $keyCrypt = hash('sha256',$this->params->getSalt().$key);
+        $tmpReq = "UPDATE users SET Password=\"$keyCrypt\" WHERE Mail=\"$mail\" LIMIT 1;";
+        $this->bdd->query($tmpReq);
         $this->session->write("forgotKey",$key);
         $this->session->write("forgotIDKey",$this->getIdWithMail($mail));
         $this->session->write("forgotKeyCreateTime",time());
@@ -229,8 +202,16 @@ class Auth extends Session {
     public function ForgotPasswordVerifKeyAndID($ID,$key) {
         $return = false;
         if (($this->session->read('forgotKeyCreateTime')+600)> time()) { 
-            if (($this->session->read("forgotKey") == $key) && ($this->session->read("forgotIDKey") == $ID)) {
-                $return = true;
+            $keyCrypt = hash('sha256',$this->params->getSalt().$key);
+            $Request = 'SELECT Id FROM users WHERE Password="'.$keyCrypt.'" LIMIT 1;';
+            $DbInfos = $this->bdd->query($Request)->fetch_assoc();
+            if (!is_null($DbInfos)) {
+                if (
+                    ($this->session->read("forgotKey") == $key) 
+                    && ($this->session->read("forgotIDKey") == $ID)
+                   ) {
+                    $return = true;
+                }
             }
         }
         return $return;

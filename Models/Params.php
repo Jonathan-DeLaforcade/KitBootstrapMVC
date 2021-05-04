@@ -3,7 +3,10 @@
 class Params {
     private $globalVersion = 2.0;
     private $localVersion = 1.0;
-    private $allowRegister = True;
+    private $allowRegister = False;
+    private $allowRecoveryPassword = True;
+    private $salt = "BqhSqk3YxP9QqTG8";
+
 
     private $menuItems = Array(
         Array("Accueils", "Home", "fa-cogs"),
@@ -35,7 +38,15 @@ class Params {
         return $this->allowRegister;
     }
 
+    public function getAllowPassRecovery() {
+        return $this->allowRecoveryPassword;
+    }
+
     public function getMenuItems() {
         return $this->menuItems;
+    }
+
+    public function getSalt() {
+        return $this->salt;
     }
 }

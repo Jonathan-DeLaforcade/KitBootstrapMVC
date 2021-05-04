@@ -3,10 +3,9 @@
 </div>
     <?= $form ?>
 <hr>
-<hr>
 
 <div class="text-center">
-    <a class="small" href="index.php?url=ForgotPassword">Mot de passe perdu</a>
+    <?= $forgotPass ?>
 </div>
 
 <div class="text-center">

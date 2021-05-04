@@ -6,7 +6,7 @@ $auth = new Auth;
 $params = new Params;
 
 
-if (($auth->getRole() > 0) || !($params->getAllowRegister())) {
+if (($auth->getRole() > 0) || !($params->getAllowPassRecovery())) {
     header('Location: ../index.php?url=Home');
 }
 
@@ -45,6 +45,8 @@ if ((isset($_POST['userMail'])) && (is_string($_POST['userMail']))) {
     <?php
     $JS .= ob_get_clean();
 }
+
+echo $auth->ForgotPasswordVerifKeyAndID($_GET["ID"],$_GET["key"]);
 
 if ((isset($_GET["key"])) && ($auth->ForgotPasswordVerifKeyAndID($_GET["ID"],$_GET["key"]))) {
     $icon = "error";

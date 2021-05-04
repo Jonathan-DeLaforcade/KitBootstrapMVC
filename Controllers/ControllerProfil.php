@@ -4,15 +4,16 @@ $ProfilIsUpdated = False;
 $updateIsOk = True;
 $updateMessage = "";
 $auth = new Auth;
+$param = new Params;
 $JS = "";
 
 if ((isset($_POST["UserName"])) && (is_string($_POST["UserName"])) && ($_POST["UserName"] != "")) {
     $ProfilIsUpdated = True;
-    $updateIsOk = $auth->changeUsername($_POST["UserName"]);
+    $updateIsOk = $auth->changeUserData("Pseudo", $_POST["UserName"]);
 }
 if ((isset($_POST["UserMail"])) && (is_string($_POST["UserMail"])) && ($_POST["UserMail"] != "")) {
     $ProfilIsUpdated = True;
-    $updateIsOk = $auth->changeMail($_POST["UserMail"]);
+    $updateIsOk = $auth->changeUserData("Mail", $_POST["UserMail"]);
 }
 if ((isset($_POST["UserNewPass1"])) && (is_string($_POST["UserNewPass1"])) && ($_POST["UserNewPass1"] != "")) {
     if ((isset($_POST["UserOldPass"])) && (is_string($_POST["UserOldPass"])) && ($_POST["UserOldPass"] != "")) {
@@ -20,7 +21,10 @@ if ((isset($_POST["UserNewPass1"])) && (is_string($_POST["UserNewPass1"])) && ($
         if ((isset($_POST["UserNewPass2"]))  && (is_string($_POST["UserNewPass2"])) && ($_POST["UserNewPass2"] != "")){
             if ($_POST["UserNewPass1"] == $_POST["UserNewPass2"]){
                 if ($auth->verifPassOkWithID($auth->getId(), $_POST["UserOldPass"])) {
-                    $updateIsOk = $auth->changeUserData("Password", $_POST["UserNewPass1"]) ;
+                    $newPass = $_POST["UserNewPass1"];
+                    $newpass = $param->getSalt().$_POST["UserNewPass1"];
+                    $newPass = hash('sha256',$newpass);
+                    $updateIsOk = $auth->changeUserData("Password",$newPass);
                 } else {$updateIsOk = False; $updateMessage = "Votre ancien mot de passe est incorrecte";}
             } else {$updateIsOk = False; $updateMessage = "Les deux mot de passe ne sont pas identique";}
         } else {$updateIsOk = False; $updateMessage = "Veuillez confirmer votre nouveau mot de passe";}
