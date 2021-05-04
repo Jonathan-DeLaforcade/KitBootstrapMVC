@@ -5,12 +5,13 @@ $JS = "";
 $auth = new Auth;
 $params = new Params;
 
-
 if (($auth->getRole() > 0) || !($params->getAllowPassRecovery())) {
     header('Location: ../index.php?url=Home');
 }
 
 if ((isset($_POST['userMail'])) && (is_string($_POST['userMail']))) {
+    $__DEBUG__ = True;
+    
     $icon = "error";
     $Title = "Erreur !";
     $Message = "";
@@ -24,8 +25,15 @@ if ((isset($_POST['userMail'])) && (is_string($_POST['userMail']))) {
                 $lien = "http://localhost:3000/index.php?url=ForgotPassword&ID=".$ID."&key=".$key;
                 $icon = "success";
                 $Title = "Récuperation mot de passe";
-                $Message = "Lien de reinitialisation de mot de passe envoyé:  ";
-                $Message .= $lien;
+                $Message = "Lien de reinitialisation de mot de passe envoyé par mail";
+                if ($__DEBUG__) {
+                    $Message = "Lien de reinitialisation de mot de passe envoyé:  ";
+                    $Message .= $lien;
+                } else {
+                    $mail = "Votre lien de reinitialisation valide 10 minutes:<br />".$lien;
+                    $headers = 'From: '.$prams->getMailServeur."\r\n".'Reply-To: '.$prams->getMailServeur."\r\n".'X-Mailer: PHP/' . phpversion();
+                    mail($_POST['userMail'],"Recovery Password",$mail,$headers);
+                }
             } else { $Message = "Erreur ID"; }
         } else { $Title = "Email incorrecte";}
     }

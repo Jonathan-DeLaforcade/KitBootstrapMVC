@@ -1,10 +1,12 @@
 <?php
 
 class Params {
-    private $globalVersion = 2.0;
+    private $globalVersion = 2.1;
     private $localVersion = 1.0;
     private $allowRegister = False;
     private $allowRecoveryPassword = True;
+    private $mailAdmin = "admin@kitbootstrap.fr";
+    private $mailServeur = "contact@kitbootstrap.fr";
     private $salt = "BqhSqk3YxP9QqTG8";
 
 
@@ -19,15 +21,21 @@ class Params {
     );
 
     public function getGlobalVersion() {
-        /*──────────────────────────────────────────────────────────────────┐
-        │   Numéro de version: 1.0                                          │
-        │   - Début du projet en suivant la méthode MVC                     │
-        │                                                                   │
-        │   Numéro de version: 2.0                                          │
-        │   - Ajout de Models (chart, LineChart, NiceTumbnail, Card)        │
-        │   - Ajout de la gestion de session (login, logour, register)      │
-        │   - remise en forme du code pour le rendre plus propre            │
-        └──────────────────────────────────────────────────────────────────*/
+        /*───────────────────────────────────────────────────────────────────────────────────────────┐
+        │   Numéro de version: 1.0                                                                   │
+        │   - Début du projet en suivant la méthode MVC                                              │
+        │                                                                                            │
+        │   Numéro de version: 2.0                                                                   │
+        │   - Ajout de Models (chart, LineChart, NiceTumbnail, Card)                                 │
+        │   - Ajout de la gestion de session (login, logour, register)                               │
+        │   - remise en forme du code pour le rendre plus propre                                     │
+        │                                                                                            │   
+        │   Numéro de version: 2.1                                                                   │
+        │   - Ajout de la gestion des mots de passe oublié                                           │
+        │   - Sécurisation du login et du token                                                      │
+        │   - Ajout du models progressbar                                                            │
+        │   - Ajout du dossier Specific pour l'ajout de pages et la modification de pages existante  │
+        └───────────────────────────────────────────────────────────────────────────────────────────*/
         return $this->globalVersion;
     }
 
@@ -48,5 +56,9 @@ class Params {
 
     public function getSalt() {
         return $this->salt;
+    }
+
+    public function getMailServeur() {
+        return $this->mailServeur;
     }
 }
