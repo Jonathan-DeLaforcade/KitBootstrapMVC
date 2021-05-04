@@ -19,7 +19,6 @@ class Auth extends Session {
     public function login($mail, $pass){
         $pass = hash('sha256',$this->params->getSalt().$pass);
         $query = "SELECT Id,Pseudo,Mail,Role FROM users WHERE Mail='".$mail."' AND PASSWORD='".$pass."' LIMIT 1";
-        echo $query;
         $DbInfos = $this->bdd->query($query)->fetch_assoc();
         if (!is_null($DbInfos)) {
             $this->connect($DbInfos);

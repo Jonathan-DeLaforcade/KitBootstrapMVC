@@ -46,8 +46,6 @@ if ((isset($_POST['userMail'])) && (is_string($_POST['userMail']))) {
     $JS .= ob_get_clean();
 }
 
-echo $auth->ForgotPasswordVerifKeyAndID($_GET["ID"],$_GET["key"]);
-
 if ((isset($_GET["key"])) && ($auth->ForgotPasswordVerifKeyAndID($_GET["ID"],$_GET["key"]))) {
     $icon = "error";
     $alert = false;
