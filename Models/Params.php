@@ -7,7 +7,7 @@ class Params {
     private $allowRecoveryPassword = True;
     private $mailAdmin = "admin@kitbootstrap.fr";
     private $mailServeur = "contact@kitbootstrap.fr";
-    private $salt = "BqhSqk3YxP9QqTG8";
+    private $salt = "YourPersonalWebsiteSalt";
 
     private $bddHost = "127.0.0.1";
     private $bddPort = "3306";
