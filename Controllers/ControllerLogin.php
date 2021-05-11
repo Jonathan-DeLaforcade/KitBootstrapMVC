@@ -2,8 +2,9 @@
 
 $auth = new Auth;
 $params = new Params;
-if ($auth->getRole() > 0){
-    header('Location: ../index.php?url=Home');
+
+if ($auth->getRole() > 0) {
+    header('Location: ./index.php?url=Home');
 }
 
 $JS = "";
@@ -29,7 +30,7 @@ if ((isset($_POST['userName'])) && (isset($_POST['PassWord']))) {
             <?php
             $JS .= ob_get_clean();
         } else {
-            header('Location: ../index.php?url=Home');
+            header('Location: ./index.php?url=Home');
         }
     }
 }

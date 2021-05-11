@@ -1,5 +1,12 @@
 <?php
 
+/*──────────────────────────────────────────────────────────────────┐
+│   Auteur  : Jonathan - Hogo                                       │
+│                                                                   │
+│   Description:                                                    │
+|   Exemple de controller de page intégrant les models "Card"       |
+└──────────────────────────────────────────────────────────────────*/
+
 
 $card1 = new Card("test","lorem lorem lorem lorem lorem lorem lorem lorem lorem","collapse",array("*header:","truc1","-","truc2"));
 $card2 = new Card("test","lorem lorem lorem lorem lorem lorem lorem lorem lorem","collapse",array("*header:","truc1","-","truc2"));

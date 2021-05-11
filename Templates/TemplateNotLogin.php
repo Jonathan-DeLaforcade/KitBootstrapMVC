@@ -12,11 +12,11 @@
   <title>SB Admin 2 - <?= $t ?></title>
 
   <!-- Custom fonts for this template-->
-  <link href="../Src/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="./Src/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-  <script src="../Src/vendor/sweetalert/sweetalert2.all.min.js"></script>
+  <script src="./Src/vendor/sweetalert/sweetalert2.all.min.js"></script>
   <!-- Custom styles for this template-->
-  <link href="../Src/css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="./Src/css/sb-admin-2.min.css" rel="stylesheet">
   <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
 </head>
 
@@ -61,7 +61,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="src/js/sb-admin-2.min.js"></script>
-  <script src="../Src/js/cryptMD5.js"></script>
+  <script src="./Src/js/cryptMD5.js"></script>
   <?= $scriptPerso ?>
 </body>
 

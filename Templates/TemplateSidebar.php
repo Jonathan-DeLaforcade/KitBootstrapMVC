@@ -33,15 +33,17 @@
   function builMenu($menuArray) {
     foreach( $menuArray as $oneMenuItem) {
       //if (is_array() && (length... == 3))
-      echo addMenuItem($oneMenuItem[0], $oneMenuItem[1], $oneMenuItem[2]);
+      echo addMenuItem($oneMenuItem[0], $oneMenuItem[1], $oneMenuItem[2], $oneMenuItem[3]);
     }
   }
-  function addMenuItem($text, $lien, $icon) {
+  function addMenuItem($text, $lien, $icon,$specific) {
+    $uri = "url";
+    if ($specific) {$uri = "p";}
     ob_start();
     ?>
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link" href="index.php?url=<?php echo $lien ; ?>">
+        <a class="nav-link" href="index.php?<?php echo $uri; ?>=<?php echo $lien; ?>">
           <i class="fas fa-fw <?php echo $icon ; ?>"></i>
           <span><?php echo $text ; ?></span>
         </a>

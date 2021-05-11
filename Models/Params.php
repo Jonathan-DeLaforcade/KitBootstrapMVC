@@ -9,15 +9,16 @@ class Params {
     private $mailServeur = "contact@kitbootstrap.fr";
     private $salt = "BqhSqk3YxP9QqTG8";
 
+    private $bddHost = "127.0.0.1";
+    private $bddPort = "3306";
+    private $bddLogin = "kitBootstrap";
+    private $bddPassword = "kitBootstrap";
+    private $bddBase = "kitBootstrap";
 
     private $menuItems = Array(
-        Array("Accueils", "Home", "fa-cogs"),
-        Array("Chart", "Chart", "fas fa-chart-bar"),
-        Array("Table", "Table", "fas fa-table"),
-        Array("NiceTumbnail", "NiceTumbnail", "fas fa-table"),
-        Array("CircleChart", "CircleChart", "fas fa-table"),
-        Array("Card", "Card", "fas fa-table"),
-        Array("Progress Bar", "ProgressBar", "fas fa-bars")
+        Array("Accueils", "Home", "fa-cogs",false),
+        Array("Liste des bornes","ListeBornes", "fas fa-chart-bar",true),
+        Array("Liste des sessions","ListeSessions", "fas fa-chart-bar",true)
     );
 
     public function getGlobalVersion() {
@@ -37,6 +38,10 @@ class Params {
         │   - Ajout du dossier Specific pour l'ajout de pages et la modification de pages existante  │
         └───────────────────────────────────────────────────────────────────────────────────────────*/
         return $this->globalVersion;
+    }
+
+    public function getParam($paramName) {
+        return $this->$paramName;
     }
 
     public function getLocalVersion() {

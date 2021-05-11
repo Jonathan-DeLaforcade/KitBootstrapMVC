@@ -9,9 +9,9 @@ class View
     public function __construct($specificPage,$action,$auth)
     {
         if ($specificPage) {
-            $this->_file = 'Specific/Views/View'.$action.".php";
+            $this->_file = './Specific/Views/View'.$action.".php";
         } else {
-            $this->_file = 'Views/View'.$action.".php";
+            $this->_file = './Views/View'.$action.".php";
         }
         $this->_t = $action;
         $this->_auth = $auth;
@@ -30,15 +30,15 @@ class View
             throw new Exception("Page Introuvable");
         }
 
-        $topbarFile = "Templates/TemplateTopbar.php";
-        if (file_exists("Specific/Templates/TemplateTopbar.php")) {
-            $topbarFile = "Specific/Templates/TemplateTopbar.php"; 
+        $topbarFile = "./Templates/TemplateTopbar.php";
+        if (file_exists("./Specific/Templates/TemplateTopbar.php")) {
+            $topbarFile = "./Specific/Templates/TemplateTopbar.php"; 
         }
         $topbar = $this->generateFile($topbarFile,array("t" => $this->_t,"UserName" => $this->_auth->getUsername()));
         
-        $sidebarFile = "Templates/TemplateSidebar.php";
-        if (file_exists("Specific/Templates/TemplateSidebar.php")) {
-            $sidebarFile = "Specific/Templates/TemplateSidebar.php"; 
+        $sidebarFile = "./Templates/TemplateSidebar.php";
+        if (file_exists("./Specific/Templates/TemplateSidebar.php")) {
+            $sidebarFile = "./Specific/Templates/TemplateSidebar.php"; 
         }
         $sidebar = $this->generateFile($sidebarFile,array("menuItems" => $this->_menuItems));
 
@@ -54,15 +54,15 @@ class View
         
         // Role management
         if ($this->_auth->getRole() == 0 ) { // Not logged
-            $notLoginFile = "Templates/TemplateNotLogin.php";
-            if (file_exists("Specific/Templates/TemplateNotLogin.php")) {
-                $notLoginFile = "Specific/Templates/TemplateNotLogin.php"; 
+            $notLoginFile = "./Templates/TemplateNotLogin.php";
+            if (file_exists("./Specific/Templates/TemplateNotLogin.php")) {
+                $notLoginFile = "./Specific/Templates/TemplateNotLogin.php"; 
             }
             $view = $this->generateFile($notLoginFile, $pageContent);
         } elseif ($this->_auth->getRole() > 0 ) { // Logged as xxx
-            $loginFile = "Templates/TemplateLogin.php";
-            if (file_exists("Specific/Templates/TemplateLogin.php")) {
-                $loginFile = "Specific/Templates/TemplateLogin.php"; 
+            $loginFile = "./Templates/TemplateLogin.php";
+            if (file_exists("./Specific/Templates/TemplateLogin.php")) {
+                $loginFile = "./Specific/Templates/TemplateLogin.php"; 
             }
             $view = $this->generateFile($loginFile, $pageContent);
         } else { // Default case, no role : error
@@ -75,9 +75,9 @@ class View
     public function generateError($data)
     {
         $content = $this->generateFile($this->_file, $data);
-        $topbar = $this->generateFile("Views/TemplateTopbar.php",array("t" => $this->_t));
-        $sidebar = $this->generateFile("Views/TemplateSidebar.php",array("role" => '0'));
-        $view = $this->generateFile("Views/TemplateError.php",array("t" => $this->_t, "topbar" =>$topbar,"sidebar" => $sidebar,"content" => $content));
+        $topbar = $this->generateFile("./Views/TemplateTopbar.php",array("t" => $this->_t));
+        $sidebar = $this->generateFile("./Views/TemplateSidebar.php",array("role" => '0'));
+        $view = $this->generateFile("./Views/TemplateError.php",array("t" => $this->_t, "topbar" =>$topbar,"sidebar" => $sidebar,"content" => $content));
 
         echo $view;
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 $tumb1 = new NiceTumbnail("test1",65,"percent","fas fa-exclamation-triangle","danger");
 $tumb2 = new NiceTumbnail("test2",2000);
 $tumb3 = new NiceTumbnail("test3",3000);

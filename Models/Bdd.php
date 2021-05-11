@@ -1,9 +1,20 @@
 <?php
-abstract class Bdd {
+class Bdd {
     private static $_bdd;
 
     protected static function setBdd() {
-        self::$_bdd = new mysqli('127.0.0.1', 'kitBootstrap', 'kitBootstrap', 'kitBootstrap');
+        $params = new Params;
+        $bddHost = $params->getParam("bddHost");
+        $bddPort = $params->getParam("bddPort");
+        $bddLogin = $params->getParam("bddLogin");
+        $bddPassword = $params->getParam("bddPassword");
+        $bddBase = $params->getParam("bddBase");
+        // echo $bddPort."<br />";
+        // echo $bddLogin."<br />";
+        // echo $bddPassword."<br />";
+        // echo $bddBase."<br />";
+        //self::$_bdd = new mysqli($bddHost,$bddLogin,$bddPassword,$bddBase);
+        self::$_bdd = new mysqli($bddHost,$bddLogin,$bddPassword,$bddBase);
     }
 
     public function getBdd()

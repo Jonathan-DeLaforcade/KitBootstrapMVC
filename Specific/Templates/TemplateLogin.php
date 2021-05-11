@@ -9,14 +9,20 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - 404</title>
+  <title>hCloud - <?= $t ?></title>
+
 
   <!-- Custom fonts for this template-->
   <link href="./Src/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
+  
   <!-- Custom styles for this template-->
   <link href="./Src/css/sb-admin-2.min.css" rel="stylesheet">
+  <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
+  <!-- Custom styles for this page -->
+  <link href="./Src/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+  <script src="./Src/vendor/sweetalert/sweetalert2.all.min.js"></script>
 
 </head>
 
@@ -35,19 +41,7 @@
 
         <?= $topbar ?>
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-          <!-- 404 Error Text -->
-          <div class="text-center">
-            <div class="error mx-auto" data-text="404">404</div>
-            <p class="lead text-gray-800 mb-5"><?= $content ?></p>
-            <p class="text-gray-500 mb-0"></p>
-            <a href="index.php?url=Home">&larr; Retour a l'acceuil</a>
-          </div>
-
-        </div>
-        <!-- /.container-fluid -->
+        <?= $content ?>
 
       </div>
       <!-- End of Main Content -->
@@ -56,7 +50,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; hCloud 2021</span>
           </div>
         </div>
       </footer>
@@ -78,30 +72,40 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave???</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Déconnexion</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-body">Êtes-vous sur de vouloirs vous déconnectez ?.</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+          <a class="btn btn-primary" href="Fnc/Logout.php">Déconnexion</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="src/vendor/jquery/jquery.min.js"></script>
-  <script src="src/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./Src/vendor/jquery/jquery.min.js"></script>
+  <script src="./Src/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="src/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="./Src/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="src/js/sb-admin-2.min.js"></script>
+  <script src="./Src/js/cryptMD5.js"></script>
 
+
+  <!-- Page level plugins -->
+  <script src="./Src/vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="./Src/js/demo/chart-pie-demo.js"></script>
+  <script src="./Src/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="./Src/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+   <!-- custom scripts -->
+  <?= $scriptPerso ?>
 </body>
 
 </html>
