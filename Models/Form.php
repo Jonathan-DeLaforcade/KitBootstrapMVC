@@ -39,11 +39,7 @@ class Form {
 
     public function createSubmit($txt = "Connexion") {
         $value = '<div class="form-group">';
-        if ($JSOnClick != "") {
-            $value .= '<button id="SubButton" type="submit" class="btn btn-primary btn-user btn-block">'.$txt.'</button>';
-        } else {
-            $value .= '<button id="SubButton" type="submit" class="btn btn-primary btn-user btn-block">'.$txt.'</button>';
-        }
+        $value .= '<button id="SubButton" type="submit" class="btn btn-primary btn-user btn-block">'.$txt.'</button>';
         $value .= '</div>';
 
         $this->inputs = ($this->inputs.$value);

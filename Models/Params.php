@@ -7,18 +7,17 @@ class Params {
     private $allowRecoveryPassword = True;
     private $mailAdmin = "admin@kitbootstrap.fr";
     private $mailServeur = "contact@kitbootstrap.fr";
-    private $salt = "YourPersonalWebsiteSalt";
+    private $salt = "YoursaltPassphrase";
 
     private $bddHost = "127.0.0.1";
     private $bddPort = "3306";
-    private $bddLogin = "kitBootstrap";
-    private $bddPassword = "kitBootstrap";
-    private $bddBase = "kitBootstrap";
+    private $bddLogin = "yourBddLogin";
+    private $bddPassword = "yourBddPassword";
+    private $bddBase = "yourBddName";
 
     private $menuItems = Array(
         Array("Accueils", "Home", "fa-cogs",false),
-        Array("Liste des bornes","ListeBornes", "fas fa-chart-bar",true),
-        Array("Liste des sessions","ListeSessions", "fas fa-chart-bar",true)
+        Array("Liste des clients","ListeBornes", "fas fa-chart-bar",true)
     );
 
     public function getGlobalVersion() {
